@@ -16,22 +16,21 @@ public class CameraManager : MonoBehaviour
         SetNormalView();
     }
 
-    private void Update()
-    {
-        if (Keyboard.current.eKey.wasPressedThisFrame)
-        {
-            SetConversationView();
-        }
-    }
-
-    public void SetConversationView()
+    public void SetConversationView(bool a)
     {
         conversationCamera.Priority = 15;
         normalCamera.Priority = 10;
 
         if (dialogueCanvas != null)
         {
-            dialogueCanvas.gameObject.SetActive(true);
+            dialogueCanvas.gameObject.SetActive(a);
+            _isOpen = a;
+
+            if (a == false)
+            {
+                conversationCamera.Priority = 10;
+                normalCamera.Priority = 15;
+            }
         }
     }
 
