@@ -10,8 +10,12 @@ public class PlayerMovement : MonoBehaviour
     public float moveSpeed = 5f;
     public float rotationSpeed = 10f;
 
+    [Header("References")]
+    public CameraManager cameraManager;
+
     private Rigidbody rb;
     private Vector3 moveDirection;
+    private bool _isOpen = false;
 
     void Awake()
     {
@@ -32,6 +36,7 @@ public class PlayerMovement : MonoBehaviour
     void Update()
     {
         HandleInput();
+        HandleInteract();
     }
 
     void FixedUpdate()
@@ -48,6 +53,23 @@ public class PlayerMovement : MonoBehaviour
         if (moveDirection.sqrMagnitude > 1)
         {
             moveDirection.Normalize();
+        }
+    }
+
+    void HandleInteract()
+    {
+        if (Keyboard.current != null && Keyboard.current.eKey.wasPressedThisFrame)
+        {
+            _isOpen = !_isOpen;
+            Debug.Log("E key pressed! Activating conversation view.");
+            
+            if (cameraManager == null)
+            {
+                Debug.LogError("CameraManager reference is null!");
+                return;
+            }
+            
+            cameraManager.SetConversationView(_isOpen);
         }
     }
 
